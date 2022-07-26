@@ -4,7 +4,7 @@ import { engine } from "express-handlebars";
 
 const app = express();
 
-app.engine("handlebard", engine());
+app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "./views");
 
