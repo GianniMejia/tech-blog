@@ -1,42 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
 </head>
+
 <body>
     <style>
-        *{
+        * {
             box-sizing: border-box;
         }
-        
-        .header{
+
+        .header {
             background-color: black;
-            
+
         }
 
-        body, nav, ul{
-            margin:0;
-            padding:0;
+        body,
+        nav,
+        ul {
+            margin: 0;
+            padding: 0;
         }
 
-        nav a{
+        nav a {
             text-decoration: none;
             color: white;
             font-size: 1.5em;
         }
 
-        ul{
+        ul {
             display: flex;
         }
 
-        nav li{
+        nav li {
             padding: 1em 2em;
         }
 
-        body{
+        body {
             background-color: azure;
         }
 
@@ -45,50 +49,55 @@
             justify-content: center;
         }
 
-        article{
+        article {
             width: 80%;
         }
-        .blog-content{
-           color: black;
+
+        .blog-content {
+            color: black;
         }
 
-        .blog-header{
+        .blog-header {
             background-color: black;
 
         }
 
-        .blog-header h2, .blog-header h4{
+        .blog-header h2,
+        .blog-header h4 {
             color: white;
         }
 
-        article h2, article h4{
+        article h2,
+        article h4 {
             color: white;
 
         }
-        article h2{
+
+        article h2 {
             text-align: left;
         }
 
-        article h4{
+        article h4 {
             text-align: right;
         }
 
-        article{
+        article {
             display: grid;
             grid-template-columns: 1fr 1fr;
         }
-        
     </style>
-    <div class="header"> 
+    <div class="header">
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/dashboard">Dashboard</a><a/></li>
+                <li><a href="/dashboard">Dashboard</a><a /></li>
                 <li><a href="/login">Login</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
-        <div><h1>The Tech Blog</h1></div>
+        <div>
+            <h1>The Tech Blog</h1>
+        </div>
     </div>
 
     <div class="main">
@@ -96,6 +105,7 @@
         {{{body}}}
 
     </div>
-    
+
 </body>
+
 </html>
