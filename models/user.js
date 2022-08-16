@@ -10,8 +10,9 @@ const User = db.define("User", {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
-  password: {
+  passwordHash: {
     type: DataTypes.STRING,
     allowNull: false,
   },

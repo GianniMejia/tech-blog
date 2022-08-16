@@ -15,6 +15,7 @@
     document.querySelector("form").onsubmit = async (e) => {
         // Stop the page from reloading.
         e.preventDefault();
+        document.querySelector(".errors").innerHTML = "";
 
         try {
             const response = await fetch("/api/signup", {
@@ -29,11 +30,16 @@
                 })
             });
 
-            const data = await response.json();
+            if (response.redirected) {
+                location.href = response.url;
+            }
 
+            const data = await response.json();
             if (!response.ok) {
                 throw new CustomError(data.message, response.status);
             }
+
+            location.href = "/";
         } catch (error) {
             if (error.code) {
                 document.querySelector(".errors").innerHTML = error.message;
