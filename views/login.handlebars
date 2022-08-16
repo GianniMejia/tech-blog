@@ -1,4 +1,6 @@
+<h1>Login</h1>
 <form>
+    <div class="errors"></div>
     <label>
         Username
         <input type="text" name="username" />
@@ -7,4 +9,41 @@
         Password
         <input type="password" name="password" />
     </label>
+    <button>Login</button>
 </form>
+<script>
+    document.querySelector("form").onsubmit = async (e) => {
+        // Stop the page from reloading.
+        e.preventDefault();
+        document.querySelector(".errors").innerHTML = "";
+
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: document.querySelector("[name='username']").value,
+                    password: document.querySelector("[name='password']").value
+                })
+            });
+
+            if (response.redirected) {
+                location.href = response.url;
+            }
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new CustomError(data.message, response.status);
+            }
+        } catch (error) {
+            if (error.code) {
+                document.querySelector(".errors").innerHTML = error.message;
+            } else {
+                throw error;
+            }
+        }
+    };
+</script>

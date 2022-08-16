@@ -38,8 +38,6 @@
             if (!response.ok) {
                 throw new CustomError(data.message, response.status);
             }
-
-            location.href = "/";
         } catch (error) {
             if (error.code) {
                 document.querySelector(".errors").innerHTML = error.message;

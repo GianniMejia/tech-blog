@@ -94,10 +94,61 @@ app.post("/api/signup", async (req, res) => {
     // Save user data in session (log them in)
     req.session.userId = user.id;
     req.session.save();
+
+    res.redirect("/");
   } catch (error) {
     res.status(500).send({ message: "Something went wrong." });
     console.log(error);
   }
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/api/login", async (req, res) => {
+  try {
+    if (req.session.userId) {
+      res.redirect("/");
+      return;
+    }
+
+    if (!req.body.username) {
+      res.status(400).send({ message: "Please enter a username." });
+      return;
+    }
+
+    if (!req.body.password) {
+      res.status(400).send({ message: "Please enter a password." });
+      return;
+    }
+
+    const user = await User.findOne({ where: { username: req.body.username } });
+
+    if (!user) {
+      res.status(400).send({ message: "Invalid username/password." });
+      return;
+    }
+
+    if (!bcrypt.compare(req.body.password, user.passwordHash)) {
+      res.status(400).send({ message: "Invalid username/password." });
+      return;
+    }
+
+    // Save user data in session (log them in)
+    req.session.userId = user.id;
+    req.session.save();
+
+    res.redirect("/");
+  } catch (error) {
+    res.status(500).send({ message: "Something went wrong." });
+    console.log(error);
+  }
+});
+
+app.get("/api/logout", (req, res) => {
+  req.session.destroy();
+  res.status(200).send({ success: true });
 });
 
 app.listen(3002, () => console.log("server running."));

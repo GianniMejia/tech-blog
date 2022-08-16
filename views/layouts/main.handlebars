@@ -106,7 +106,7 @@
                 <li><a href="/dashboard">Dashboard</a><a /></li>
                 <li><a href="/signup">Signup</a></li>
                 <li><a href="/login">Login</a></li>
-                <li><a href="/logout">Logout</a></li>
+                <li><button id="logout-button">Logout</button></li>
             </ul>
         </nav>
         <div>
@@ -120,6 +120,12 @@
 
     </div>
 
+
+    <script>
+        document.querySelector("#logout-button").onclick = () => {
+            fetch("/api/logout");
+        }
+    </script>
 </body>
 
 </html>
