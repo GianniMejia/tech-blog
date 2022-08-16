@@ -151,4 +151,20 @@ app.get("/api/logout", (req, res) => {
   res.status(200).send({ success: true });
 });
 
+app.get("/api/current-user", async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      res.status(200).send(null);
+      return;
+    }
+
+    res
+      .status(200)
+      .send(await User.findOne({ where: { id: req.session.userId } }));
+  } catch (error) {
+    res.status(500).send({ message: "Something went wrong." });
+    console.log(error);
+  }
+});
+
 app.listen(3002, () => console.log("server running."));

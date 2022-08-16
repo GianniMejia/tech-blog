@@ -1,17 +1,15 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>
 
     <script>
         class CustomError extends Error {
             constructor(message, code) {
-                super(message);
-                this.code = code;
+                super(message); this.code = code;
             }
         }
     </script>
@@ -25,7 +23,6 @@
 
         .header {
             background-color: black;
-
         }
 
         body,
@@ -37,7 +34,8 @@
 
         nav a {
             text-decoration: none;
-            color: white;
+            color:
+                white;
             font-size: 1.5em;
         }
 
@@ -63,12 +61,12 @@
         }
 
         .blog-content {
-            color: black;
+            color:
+                black;
         }
 
         .blog-header {
             background-color: black;
-
         }
 
         .blog-header h2,
@@ -79,7 +77,6 @@
         article h2,
         article h4 {
             color: white;
-
         }
 
         article h2 {
@@ -98,15 +95,19 @@
         .errors {
             color: red;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
     <div class="header">
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/dashboard">Dashboard</a><a /></li>
-                <li><a href="/signup">Signup</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><button id="logout-button">Logout</button></li>
+                <li><a href="/dashboard">Dashboard</a><a></a></li>
+                <li><a href="/signup" class="hidden-when-logged-in hidden">Signup</a></li>
+                <li><a href="/login" class="hidden-when-logged-in hidden">Login</a></li>
+                <li><button id="logout-button" class="hidden-when-logged-out hidden">Logout</button></li>
             </ul>
         </nav>
         <div>
@@ -120,11 +121,23 @@
 
     </div>
 
-
     <script>
         document.querySelector("#logout-button").onclick = () => {
             fetch("/api/logout");
-        }
+        } (async () => {
+            const response = await fetch("/api/current-user");
+            const user = await response.json();
+            if (user) {
+                document.querySelectorAll(".hidden-when-logged-out").forEach(element => {
+                    element.classList.remove("hidden");
+                });
+            } else {
+                document.querySelectorAll(".hidden-when-logged-in").forEach(element => {
+                    element.classList.remove("hidden");
+                });
+            }
+        })()
+
     </script>
 </body>
 
