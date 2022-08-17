@@ -41,22 +41,17 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "./views");
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   res.render("home", {
-    posts: [
-      {
-        id: 1,
-        title: "Post 1",
-        postDate: new Date(),
-        content: "This is the first test post.",
-      },
-      {
-        id: 2,
-        title: "Post 2",
-        postDate: new Date(),
-        content: "This is the second test post.",
-      },
-    ],
+    posts: (
+      await BlogPost.findAll({
+        raw: true,
+        order: [["datePosted", "DESC"]],
+      })
+    ).map((post) => ({
+      ...post,
+      datePosted: post.datePosted.toLocaleString("en-US"),
+    })),
   });
 });
 
@@ -165,6 +160,20 @@ app.get("/api/current-user", async (req, res) => {
     res.status(500).send({ message: "Something went wrong." });
     console.log(error);
   }
+});
+
+app.get("/dashboard", (req, res) => {
+  if (!req.session.userId) {
+    res.redirect("/login");
+    return;
+  }
+  res.render("dashboard");
+});
+
+app.get("/post/:id", async (req, res) => {
+  res.render("post", {
+    post: await BlogPost.findByPk(req.params.id, { raw: true }),
+  });
 });
 
 app.listen(3002, () => console.log("server running."));

@@ -1,11 +1,6 @@
 {{#each posts}}
-<article>
-    <header>
-        <h2>{{this.title}}</h2>
-        <small>{{this.postDate}}</small>
-    </header>
-    <main>
-        <p>{{this.content}}</p>
-    </main>
-</article>
+<a href="/post/{{this.id}}">
+    <h2>{{this.title}}</h2>
+    <small>{{this.datePosted}}</small>
+</a>
 {{/each}}
