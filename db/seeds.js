@@ -5,8 +5,6 @@ import BlogPost from "../models/blog-post.js";
 import Comment from "../models/comment.js";
 
 (async () => {
-  await db.sync({ force: true });
-
   await User.bulkCreate([
     {
       username: "user1",
@@ -26,6 +24,21 @@ import Comment from "../models/comment.js";
       content: "My second post is about HTML. It's fun.",
       datePosted: new Date(),
       userId: 1,
+    },
+  ]);
+
+  await Comment.bulkCreate([
+    {
+      content: "Comment 1",
+      datePosted: new Date(),
+      userId: 1,
+      blogPostId: 1,
+    },
+    {
+      content: "Comment 2",
+      datePosted: new Date(),
+      userId: 1,
+      blogPostId: 1,
     },
   ]);
 })();

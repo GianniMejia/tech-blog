@@ -7,3 +7,54 @@
         <p>{{post.content}}</p>
     </main>
 </article>
+
+<section>
+    <h1>Comments</h1>
+    {{#each post.comments}}
+    <h5>{{this.datePosted}}</h5>
+    <p>{{this.content}}</p>
+    {{/each}}
+</section>
+<form>
+    <div class="errors"></div>
+    <label>
+        Leave a comment...
+        <textarea name="content"></textarea>
+    </label>
+
+    <button>Submit</button>
+</form>
+
+<script>
+    document.querySelector("form").onsubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch(`/api/comment`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    content: document.querySelector("[name='content']").value
+                })
+            })
+
+            if (response.redirected) {
+                location.href = response.url;
+            }
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new CustomError(data.message, response.status);
+            }
+        } catch (error) {
+            if (error.code) {
+                document.querySelector(".errors").innerHTML = error.message;
+            } else {
+                throw error;
+            }
+        }
+    }
+</script>

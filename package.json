@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
     "db": "mysql -u root -ppassword < ./db/db.sql",
-    "seeds": "node ./db/seeds.js"
+    "schema": "node ./db/schema.js",
+    "seeds": "npm run schema && node ./db/seeds.js"
   },
   "repository": {
     "type": "git",

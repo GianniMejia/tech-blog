@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../db/db.js";
+import Comment from "./comment.js";
 import User from "./user.js";
 
 const BlogPost = db.define("BlogPost", {
@@ -28,6 +29,11 @@ const BlogPost = db.define("BlogPost", {
       key: "id",
     },
   },
+});
+
+BlogPost.hasMany(Comment, {
+  as: "comments",
+  foreignKey: { name: "blogPostId" },
 });
 
 export default BlogPost;

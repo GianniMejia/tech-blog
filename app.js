@@ -11,9 +11,6 @@ import Comment from "./models/comment.js";
 
 const app = express();
 
-// Update the schema.
-db.sync({ alter: true });
-
 // connect(session.Store).use(
 //   connect.session({
 //     store: new SequelizeStore(options),
@@ -171,9 +168,55 @@ app.get("/dashboard", (req, res) => {
 });
 
 app.get("/post/:id", async (req, res) => {
+  const post = (
+    await BlogPost.findByPk(req.params.id, {
+      include: [
+        {
+          model: Comment,
+          as: "comments",
+        },
+      ],
+    })
+  ).get({ plain: true });
+
+  // TODO: include the user of the comment of the post
+  console.log(post);
+
   res.render("post", {
-    post: await BlogPost.findByPk(req.params.id, { raw: true }),
+    post: {
+      ...post,
+      comments: post.comments.map((comment) => ({
+        ...comment,
+        datePosted: comment.datePosted.toLocaleString("en-US"),
+      })),
+      datePosted: post.datePosted.toLocaleString("en-US"),
+    },
   });
+});
+
+app.post("/api/comment", async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      res.status(403).send({ message: "Please login to do that." });
+      return;
+    }
+
+    if (!req.body.content) {
+      res.status(400).send({ message: "Please enter a comment." });
+      return;
+    }
+
+    await Comment.create({
+      ...req.body,
+      datePosted: new Date(),
+      userId: req.session.userId,
+    });
+
+    res.redirect("back");
+  } catch (error) {
+    res.status(500).send({ message: "Something went wrong." });
+    console.log(error);
+  }
 });
 
 app.listen(3002, () => console.log("server running."));
