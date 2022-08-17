@@ -122,9 +122,14 @@
     </div>
 
     <script>
-        document.querySelector("#logout-button").onclick = () => {
-            fetch("/api/logout");
-        } (async () => {
+        document.querySelector("#logout-button").onclick = async () => {
+            const response = await fetch("/api/logout");
+            if (response.redirected) {
+                location.href = response.url;
+            }
+        }
+
+        (async () => {
             const response = await fetch("/api/current-user");
             const user = await response.json();
             if (user) {

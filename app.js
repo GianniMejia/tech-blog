@@ -148,13 +148,13 @@ app.post("/api/login", async (req, res) => {
 
 app.get("/api/logout", (req, res) => {
   req.session.destroy();
-  res.status(200).send({ success: true });
+  res.redirect("/");
 });
 
 app.get("/api/current-user", async (req, res) => {
   try {
     if (!req.session.userId) {
-      res.status(200).send(null);
+      res.status(200).send("null");
       return;
     }
 
