@@ -14,7 +14,7 @@ const BlogPost = db.define("BlogPost", {
     allowNull: false,
   },
   content: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   datePosted: {
