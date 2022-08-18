@@ -209,6 +209,46 @@ app.post("/api/post", async (req, res) => {
   }
 });
 
+app.put("/api/post/:id/edit", async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      res.status(403).send({ message: "Please login to do that." });
+      return;
+    }
+
+    if (
+      req.session.userId !=
+      (await BlogPost.findByPk(req.params.id, { raw: true })).userId
+    ) {
+      res.status(403).send({ message: "Unauthorized." });
+      return;
+    }
+
+    if (!req.body.title) {
+      res.status(400).send({ message: "Please enter a title." });
+      return;
+    }
+
+    if (!req.body.content) {
+      res.status(400).send({ message: "Please enter post content." });
+      return;
+    }
+
+    await BlogPost.update(
+      {
+        title: req.body.title,
+        content: req.body.content,
+      },
+      { where: { id: req.params.id } }
+    );
+
+    res.redirect("/dashboard");
+  } catch (error) {
+    res.status(500).send({ message: "Something went wrong." });
+    console.log(error);
+  }
+});
+
 app.get("/post/:id", async (req, res) => {
   const post = (
     await BlogPost.findByPk(req.params.id, {
@@ -229,6 +269,17 @@ app.get("/post/:id", async (req, res) => {
         ...comment,
         datePosted: comment.datePosted.toLocaleString("en-US"),
       })),
+      datePosted: post.datePosted.toLocaleString("en-US"),
+    },
+  });
+});
+
+app.get("/post/:id/edit", async (req, res) => {
+  const post = (await BlogPost.findByPk(req.params.id)).get({ plain: true });
+
+  res.render("edit-post", {
+    post: {
+      ...post,
       datePosted: post.datePosted.toLocaleString("en-US"),
     },
   });

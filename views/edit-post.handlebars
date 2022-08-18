@@ -1,0 +1,49 @@
+<article>
+    <div class="errors"></div>
+    <header>
+        <input type="text" name="title" value="{{post.title}}">
+        <small>{{post.datePosted}}</small>
+    </header>
+    <main>
+        <textarea name="content">{{post.content}}</textarea>
+
+        <button id="save-button" class="hidden only-for-user-{{post.userId}}">Save</button>
+    </main>
+</article>
+
+<script>
+
+    document.querySelector("#save-button").onclick = async () => {
+
+        try {
+            const response = await fetch(`/api/post/{{post.id}}/edit`, {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: document.querySelector("[name='title']").value,
+                    content: document.querySelector("[name='content']").value,
+                })
+            })
+
+            if (response.redirected) {
+                location.href = response.url;
+                return;
+            }
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new CustomError(data.message, response.status);
+            }
+        } catch (error) {
+            if (error.code) {
+                document.querySelector(".errors").innerHTML = error.message;
+            } else {
+                throw error;
+            }
+        }
+    }
+
+</script>

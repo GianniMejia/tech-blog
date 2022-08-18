@@ -13,16 +13,10 @@
             }
         }
     </script>
-</head>
 
-<body>
     <style>
         * {
             box-sizing: border-box;
-        }
-
-        .header {
-            background-color: black;
         }
 
         body,
@@ -30,6 +24,20 @@
         ul {
             margin: 0;
             padding: 0;
+        }
+
+        body {
+            background-color: azure;
+            font-family: sans-serif;
+        }
+
+        body>header {
+            background-color: black;
+        }
+
+        body>main {
+            max-width: 900px;
+            margin: auto;
         }
 
         nav a {
@@ -47,49 +55,37 @@
             padding: 1em 2em;
         }
 
-        body {
-            background-color: azure;
+        input {
+            padding: 0.4em 0.6em;
         }
 
-        .main {
-            display: grid;
-            justify-content: center;
+        textarea {
+            resize: none;
+            width: 100%;
+            min-height: 5em;
+            font-family: inherit;
+            padding: 1em;
         }
 
-        article {
-            width: 80%;
-        }
-
-        .blog-content {
-            color:
-                black;
-        }
-
-        .blog-header {
-            background-color: black;
-        }
-
-        .blog-header h2,
-        .blog-header h4 {
+        button {
+            padding: 0.5em 0.7em;
+            margin: 0.1em;
+            border: none;
+            background: #4766bd;
             color: white;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        article h2,
-        article h4 {
-            color: white;
+        article header h1 {
+            font-size: 3em;
         }
 
-        article h2 {
-            text-align: left;
-        }
-
-        article h4 {
-            text-align: right;
-        }
-
-        article {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        article [name="title"] {
+            width: 100%;
+            font-size: 3em;
+            padding: 0.1em 0.3em;
+            margin-bottom: 0.5em;
         }
 
         .errors {
@@ -99,8 +95,21 @@
         .hidden {
             display: none;
         }
+
+        .comments {
+            max-width: 500px;
+
+        }
+
+        #comment-form label {
+            font-size: 1.2em;
+        }
     </style>
-    <div class="header">
+</head>
+
+<body>
+
+    <header>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
@@ -113,13 +122,13 @@
         <div>
             <h1>The Tech Blog</h1>
         </div>
-    </div>
+    </header>
 
-    <div class="main">
+    <main>
 
         {{{body}}}
 
-    </div>
+    </main>
 
     <script>
         document.querySelector("#logout-button").onclick = async () => {
@@ -142,6 +151,10 @@
                     element.classList.remove("hidden");
                 });
             }
+
+            document.querySelectorAll(".only-for-user-" + user.id).forEach(element => {
+                element.classList.remove("hidden");
+            });
         })()
 
     </script>
