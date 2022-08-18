@@ -174,13 +174,11 @@ app.get("/post/:id", async (req, res) => {
         {
           model: Comment,
           as: "comments",
+          include: [{ model: User, as: "user" }],
         },
       ],
     })
   ).get({ plain: true });
-
-  // TODO: include the user of the comment of the post
-  console.log(post);
 
   res.render("post", {
     post: {

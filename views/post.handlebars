@@ -11,7 +11,7 @@
 <section>
     <h1>Comments</h1>
     {{#each post.comments}}
-    <h5>{{this.datePosted}}</h5>
+    <h5>{{this.user.username}} - {{this.datePosted}}</h5>
     <p>{{this.content}}</p>
     {{/each}}
 </section>
@@ -20,6 +20,7 @@
     <label>
         Leave a comment...
         <textarea name="content"></textarea>
+        <input type="hidden" name="blog-post-id" value="{{post.id}}" />
     </label>
 
     <button>Submit</button>
@@ -37,9 +38,11 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    content: document.querySelector("[name='content']").value
+                    content: document.querySelector("[name='content']").value,
+                    blogPostId: document.querySelector("[name='blog-post-id']").value,
                 })
             })
+
 
             if (response.redirected) {
                 location.href = response.url;
