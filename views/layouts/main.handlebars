@@ -33,6 +33,11 @@
 
         body>header {
             background-color: black;
+
+            color: white;
+            font-size: 1.5em;
+            display: flex;
+            padding: 1em;
         }
 
         body>main {
@@ -40,23 +45,26 @@
             margin: auto;
         }
 
+        nav {
+            display: flex;
+        }
+
         nav a {
             text-decoration: none;
-            color:
-                white;
-            font-size: 1.5em;
+            font-size: 0.8em;
+            color: white;
+            padding: 1em 2em;
         }
 
         ul {
             display: flex;
-        }
-
-        nav li {
-            padding: 1em 2em;
+            list-style: none;
+            padding: 0em 2em;
         }
 
         input {
             padding: 0.4em 0.6em;
+            width: 100%;
         }
 
         textarea {
@@ -104,24 +112,27 @@
         #comment-form label {
             font-size: 1.2em;
         }
+
+        .small-form {
+            max-width: 200px;
+            margin: auto;
+        }
     </style>
 </head>
 
 <body>
 
     <header>
+        <div class="logo">The Tech Blog</div>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/dashboard">Dashboard</a><a></a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="/signup" class="hidden-when-logged-in hidden">Signup</a></li>
                 <li><a href="/login" class="hidden-when-logged-in hidden">Login</a></li>
-                <li><button id="logout-button" class="hidden-when-logged-out hidden">Logout</button></li>
             </ul>
+            <button id="logout-button" class="hidden-when-logged-out hidden">Logout</button>
         </nav>
-        <div>
-            <h1>The Tech Blog</h1>
-        </div>
     </header>
 
     <main>
@@ -146,15 +157,15 @@
                 document.querySelectorAll(".hidden-when-logged-out").forEach(element => {
                     element.classList.remove("hidden");
                 });
+
+                document.querySelectorAll(".only-for-user-" + user.id).forEach(element => {
+                    element.classList.remove("hidden");
+                });
             } else {
                 document.querySelectorAll(".hidden-when-logged-in").forEach(element => {
                     element.classList.remove("hidden");
                 });
             }
-
-            document.querySelectorAll(".only-for-user-" + user.id).forEach(element => {
-                element.classList.remove("hidden");
-            });
         })()
 
     </script>

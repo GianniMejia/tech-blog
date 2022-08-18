@@ -11,13 +11,6 @@ import Comment from "./models/comment.js";
 
 const app = express();
 
-// connect(session.Store).use(
-//   connect.session({
-//     store: new SequelizeStore(options),
-//     secret: process.env.SESSION_SECRET,
-//   })
-// );
-
 // Set up session middleware
 const SequelizeStore = connect(session.Store);
 
@@ -27,8 +20,12 @@ app.use(
     store: new SequelizeStore({
       db: db,
     }),
-    resave: false, // we support the touch method so per the express-session docs this should be set to false
-    proxy: true, // if you do SSL outside of node.
+    resave: false,
+    proxy: true,
+    cookie: {
+      // Expires in one hour.
+      maxAge: 1000 * 60 * 60,
+    },
   })
 );
 
