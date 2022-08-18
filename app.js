@@ -159,12 +159,54 @@ app.get("/api/current-user", async (req, res) => {
   }
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", async (req, res) => {
   if (!req.session.userId) {
     res.redirect("/login");
     return;
   }
-  res.render("dashboard");
+
+  res.render("dashboard", {
+    posts: (
+      await BlogPost.findAll({
+        raw: true,
+        order: [["datePosted", "DESC"]],
+        where: { userId: req.session.userId },
+      })
+    ).map((post) => ({
+      ...post,
+      datePosted: post.datePosted.toLocaleString("en-US"),
+    })),
+  });
+});
+
+app.post("/api/post", async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      res.status(403).send({ message: "Please login to do that." });
+      return;
+    }
+
+    if (!req.body.title) {
+      res.status(400).send({ message: "Please enter a title." });
+      return;
+    }
+
+    if (!req.body.content) {
+      res.status(400).send({ message: "Please enter post content." });
+      return;
+    }
+
+    await BlogPost.create({
+      ...req.body,
+      datePosted: new Date(),
+      userId: req.session.userId,
+    });
+
+    res.redirect("back");
+  } catch (error) {
+    res.status(500).send({ message: "Something went wrong." });
+    console.log(error);
+  }
 });
 
 app.get("/post/:id", async (req, res) => {

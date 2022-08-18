@@ -1,13 +1,59 @@
 <h1>Dashboard</h1>
 
-{{!-- {{#each posts}}
-<article>
-    <header>
-        <h2>{{this.title}}</h2>
-        <small>{{this.postDate}}</small>
-    </header>
-    <main>
-        <p>{{this.content}}</p>
-    </main>
-</article>
-{{/each}} --}}
+{{#each posts}}
+<a href="/post/{{this.id}}">
+    <h2>{{this.title}}</h2>
+    <small>{{this.datePosted}}</small>
+</a>
+{{/each}}
+
+<h2>New Post</h2>
+<form>
+    <div class="errors"></div>
+    <label>
+        Title
+        <input type="text" name="title" />
+    </label>
+    <label>
+        Content
+        <textarea name="content"></textarea>
+    </label>
+
+    <button>Submit</button>
+</form>
+
+<script>
+    document.querySelector("form").onsubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch(`/api/post`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: document.querySelector("[name='title']").value,
+                    content: document.querySelector("[name='content']").value,
+                })
+            })
+
+            if (response.redirected) {
+                location.href = response.url;
+                return;
+            }
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new CustomError(data.message, response.status);
+            }
+        } catch (error) {
+            if (error.code) {
+                document.querySelector(".errors").innerHTML = error.message;
+            } else {
+                throw error;
+            }
+        }
+    }
+</script>
