@@ -69,6 +69,30 @@
     }
 
     document.querySelector("#delete-button").onclick = async () => {
+        try {
+            const response = await fetch(`/api/post/{{post.id}}/delete`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
 
+            if (response.redirected) {
+                location.href = response.url;
+                return;
+            }
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new CustomError(data.message, response.status);
+            }
+        } catch (error) {
+            if (error.code) {
+                document.querySelector(".errors").innerHTML = error.message;
+            } else {
+                throw error;
+            }
+        }
     }
 </script>

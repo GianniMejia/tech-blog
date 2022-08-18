@@ -249,6 +249,32 @@ app.put("/api/post/:id/edit", async (req, res) => {
   }
 });
 
+app.delete("/api/post/:id/delete", async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      res.status(403).send({ message: "Please login to do that." });
+      return;
+    }
+
+    if (
+      req.session.userId !=
+      (await BlogPost.findByPk(req.params.id, { raw: true })).userId
+    ) {
+      res.status(403).send({ message: "Unauthorized." });
+      return;
+    }
+
+    const post = await BlogPost.findOne({ where: { id: req.params.id } });
+
+    post.destroy();
+
+    res.redirect("/dashboard");
+  } catch (error) {
+    res.status(500).send({ message: "Something went wrong." });
+    console.log(error);
+  }
+});
+
 app.get("/post/:id", async (req, res) => {
   const post = (
     await BlogPost.findByPk(req.params.id, {
