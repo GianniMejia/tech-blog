@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "db": "mysql -u root -ppassword < ./db/db.sql",
     "schema": "node ./db/schema.js",
     "seeds": "npm run schema && node ./db/seeds.js"
