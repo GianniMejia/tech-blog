@@ -333,4 +333,4 @@ app.post("/api/comment", async (req, res) => {
   }
 });
 
-app.listen(3002, () => console.log("server running."));
+app.listen(PORT, () => console.log("server running." + PORT));
