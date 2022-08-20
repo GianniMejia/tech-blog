@@ -10,7 +10,7 @@ import Comment from "./models/comment.js";
 
 const app = express();
 const PORT = process.env.PORT || 3002; //Heroku || localhost port number
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 // Set up session middleware
 const SequelizeStore = connect(session.Store);
 
