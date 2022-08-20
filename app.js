@@ -1,8 +1,8 @@
-import express from "express";
+const express = require("express");
 import { engine } from "express-handlebars";
 import "dotenv/config";
 import db from "./db/db.js";
-import session from "express-session";
+const session = require("express-session");
 import connect from "connect-session-sequelize";
 import User from "./models/user.js";
 import BlogPost from "./models/blog-post.js";
