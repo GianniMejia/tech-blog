@@ -10,7 +10,7 @@ import BlogPost from "./models/blog-post.js";
 import Comment from "./models/comment.js";
 
 const app = express();
-
+const PORT = process.env.PORT || 3002; //Heroku || localhost port number
 // Set up session middleware
 const SequelizeStore = connect(session.Store);
 
