@@ -16,21 +16,26 @@ try {
   // Set up session middleware
   const SequelizeStore = connect(session.Store);
 
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      store: new SequelizeStore({
-        db: db,
-      }),
-      resave: false,
-      proxy: true,
-      cookie: {
-        // Expires in one hour.
-        maxAge: 1000 * 60 * 60,
-      },
-      saveUninitialized: false,
-    })
-  );
+  app.use(() => {
+    try {
+      return session({
+        secret: process.env.SESSION_SECRET,
+        store: new SequelizeStore({
+          db: db,
+        }),
+        resave: false,
+        proxy: true,
+        cookie: {
+          // Expires in one hour.
+          maxAge: 1000 * 60 * 60,
+        },
+        saveUninitialized: false,
+      });
+    } catch (error) {
+      console.log("ERROR IN session MIDDLEWARE: ");
+      console.log(error.message);
+    }
+  });
 
   app.use(express.json());
 
