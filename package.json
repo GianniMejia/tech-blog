@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "npm run schema",
     "start": "node app.js",
     "db": "mysql -u root -ppassword < ./db/db.sql",
     "schema": "node ./db/schema.js",

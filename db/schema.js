@@ -4,5 +4,5 @@ import BlogPost from "../models/blog-post.js";
 import Comment from "../models/comment.js";
 
 (async () => {
-  await db.sync({ force: true });
+  await db.sync({ alter: true });
 })();
