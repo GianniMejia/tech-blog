@@ -27,6 +27,7 @@ app.use(
       // Expires in one hour.
       maxAge: 1000 * 60 * 60,
     },
+    saveUninitialized: false,
   })
 );
 
