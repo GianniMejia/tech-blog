@@ -38,17 +38,24 @@ app.set("view engine", "handlebars");
 app.set("views", "./views");
 
 app.get("/", async (req, res) => {
-  res.render("home", {
-    posts: (
-      await BlogPost.findAll({
-        raw: true,
-        order: [["datePosted", "DESC"]],
-      })
-    ).map((post) => ({
-      ...post,
-      datePosted: post.datePosted.toLocaleString("en-US"),
-    })),
-  });
+  try {
+    res.render("home", {
+      posts: (
+        await BlogPost.findAll({
+          raw: true,
+          order: [["datePosted", "DESC"]],
+        })
+      ).map((post) => ({
+        ...post,
+        datePosted: post.datePosted.toLocaleString("en-US"),
+      })),
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Something went wrong.", details: error.message });
+    console.log(error);
+  }
 });
 
 app.get("/signup", (req, res) => {
