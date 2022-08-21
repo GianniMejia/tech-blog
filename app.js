@@ -1,16 +1,17 @@
-import "express";
+import express from "express";
 import { engine } from "express-handlebars";
 import "dotenv/config";
 import db from "./db/db.js";
-import "express-session";
+import session from "express-session";
 import connect from "connect-session-sequelize";
 import User from "./models/user.js";
 import BlogPost from "./models/blog-post.js";
 import Comment from "./models/comment.js";
+import bcrypt from "bcrypt";
 
 const app = express();
 const PORT = process.env.PORT || 3002; //Heroku || localhost port number
-const bcrypt = require("bcrypt");
+
 // Set up session middleware
 const SequelizeStore = connect(session.Store);
 
