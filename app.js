@@ -15,12 +15,14 @@ const PORT = process.env.PORT || 3002; //Heroku || localhost port number
 // Set up session middleware
 const SequelizeStore = connect(session.Store);
 
+const store = new SequelizeStore({
+  db: db,
+});
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    store: new SequelizeStore({
-      db: db,
-    }),
+    store: store,
     resave: false,
     proxy: true,
     cookie: {
@@ -30,6 +32,8 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+store.sync();
 
 app.use(express.json());
 
